@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 
 import { configDotenv } from "dotenv";
+import errorHandler from "./middlewares/error";
 
 if (process.env["NODE_ENV"] === "test") {
   configDotenv({ path: ".env.test" });
@@ -19,7 +20,6 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 app.use(express.json());
-// app.use(sessionHandler());
-// app.use(errorHandler);
+app.use(errorHandler);
 
 // Configuración de rutas
