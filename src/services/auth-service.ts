@@ -18,3 +18,17 @@ export async function createUser(data: UserParams): Promise<User> {
   const newUser = await userDB.createUser(name, email, hashedPassword, role);
   return newUser;
 }
+
+//POST/login:
+
+export async function validateCredentials(
+  credentials: UserParams
+): Promise<User> {
+  const { email, password } = credentials;
+  const user = await userDB.getUserByEmail(email);
+  const isValid = await bcrypt.compare(password, user?.password || "");
+  if (!user || !isValid) {
+    throw new ApiError("Incorrect credentials", 401);
+  }
+  return user;
+}

@@ -1,10 +1,10 @@
 import express from "express";
 import { validationHandler } from "../middlewares/validation";
 import { userSchema } from "../models/auth";
-import { createUser } from "../services/auth-service";
-// import jwt from "jsonwebtoken";
+import { createUser, validateCredentials } from "../services/auth-service";
+import jwt from "jsonwebtoken";
 
-// const jwtSecret = "ultra-secret";
+const jwtSecret = "ultra-secret";
 
 const authRouter = express.Router();
 
@@ -17,6 +17,7 @@ authRouter.post(
       const newUser = await createUser(req.body);
       res.status(201).json({
         ok: true,
+        message: "Signup successful",
         data: {
           id: newUser.id,
           name: newUser.name,
@@ -29,5 +30,22 @@ authRouter.post(
     }
   }
 );
+
+//POST/login:
+
+authRouter.post("/login", async (req, res, next) => {
+  try {
+    const user = await validateCredentials(req.body);
+    const payload = { userId: user.id, userRole: user.role };
+    const token = jwt.sign(payload, jwtSecret, { expiresIn: "120m" });
+    res.json({
+      ok: true,
+      message: "Login successful",
+      data: { token: token },
+    });
+  } catch (error) {
+    next(error);
+  }
+});
 
 export default authRouter;
