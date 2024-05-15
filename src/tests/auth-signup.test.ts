@@ -13,7 +13,7 @@ const testRegisteredUsers = [
   },
   {
     name: "Testino Diprueba",
-    email: "testino@gmail.com",
+    email: "testino55@gmail.com",
     password: "123456",
     role: "user",
   },
@@ -44,5 +44,16 @@ describe("SIGNUP API", () => {
     const response = await request(app).post("/signup").send(signupData);
     expect(response.statusCode).toBe(201);
     expect(response.body.ok).toBeTruthy();
+  });
+  it("Should return an error if my email or role is invalid", async () => {
+    const signupData = {
+      name: "Probino",
+      email: "probino@.com",
+      password: "123456",
+      role: "worker",
+    };
+    const response = await request(app).post("/signup").send(signupData);
+    expect(response.statusCode).toBe(400);
+    expect(response.body.ok).toBeFalsy();
   });
 });

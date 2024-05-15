@@ -3,15 +3,18 @@ import request from "supertest";
 import { truncateTable } from "../db/utils";
 import { app } from "../app";
 
-//REGISTERED_USERS TABLE:
-describe("LOGIN API", () => {
+const jwt = require("jsonwebtoken");
+const jwtSecret = "ultra-secret";
+
+//USERS TABLE:
+describe("UPLOAD API", () => {
   truncateTable("registered_users");
 
   //POST/signup:
   it("Should create an account with an encrypted password ", async () => {
     const signupData = {
-      name: "Testino",
-      email: "testino@gmail.com",
+      name: "Alejandro",
+      email: "alejo@gmail.com",
       password: "123456",
       role: "admin",
     };
@@ -23,7 +26,7 @@ describe("LOGIN API", () => {
   //POST/login:
   it("Should login the account created", async () => {
     const loginData = {
-      email: "testino@gmail.com",
+      email: "alejo@gmail.com",
       password: "123456",
     };
     const response = await request(app).post("/login").send(loginData);
@@ -31,13 +34,15 @@ describe("LOGIN API", () => {
     expect(response.body.ok).toBeTruthy();
   });
 
-  it("Should return an error if my email or paswword are invalid", async () => {
-    const loginData = {
-      email: "testino@.com",
-      password: "123456",
-    };
-    const response = await request(app).post("/login").send(loginData);
-    expect(response.statusCode).toBe(401);
-    expect(response.body.ok).toBeFalsy();
+  //POST/Update:
+
+  it("Should only an 'admin' role to upload the CSV files ", async () => {
+    //TOKEN
+    const payload = { userId: 2, userRole: "admin" };
+    const token = jwt.sign(payload, jwtSecret, { expiresIn: "120m" });
+    let response = await request(app)
+      .post("/upload")
+      .set("Authorization", `Bearer ${token}`);
+    expect(response.statusCode).toBe(200);
   });
 });
