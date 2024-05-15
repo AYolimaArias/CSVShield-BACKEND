@@ -4,6 +4,7 @@ import cors from "cors";
 import { configDotenv } from "dotenv";
 import errorHandler from "./middlewares/error";
 import authRouter from "./routers/auth-router";
+import uploadRouter from "./routers/upload-router";
 
 if (process.env["NODE_ENV"] === "test") {
   configDotenv({ path: ".env.test" });
@@ -26,3 +27,4 @@ app.use(errorHandler);
 
 // ROUTERS:
 app.use(authRouter);
+app.use(uploadRouter);
