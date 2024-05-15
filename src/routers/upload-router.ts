@@ -7,6 +7,7 @@ import { ApiError } from "../middlewares/error";
 import { UserParams, userCSVSchema } from "../models/upload";
 import { ZodError } from "zod";
 import * as db from "../db";
+import { truncateTable } from "../db/utils";
 
 const uploadRouter = express.Router();
 
@@ -45,12 +46,12 @@ uploadRouter.post(
           errorData.push({ row: index + 1, details: details });
         }
       }
-      //   beforeEach(async () => {
-      //     await truncateTable("users");
+
+      await truncateTable("users");
       const values = successData
         .map((user) => `('${user.name}','${user.email}','${user.age}')`)
         .join(", ");
-      let query = `INSERT INTO users (name, email, age) VALUES ${values}  RETURNING *`;
+      let query = `INSERT INTO users (name, email, age) VALUES ${values}  RETURNING id,name,email,age`;
       const insertUsers = await db.query(query);
 
       res.json({
