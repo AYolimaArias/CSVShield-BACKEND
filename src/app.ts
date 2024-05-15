@@ -3,6 +3,7 @@ import cors from "cors";
 
 import { configDotenv } from "dotenv";
 import errorHandler from "./middlewares/error";
+import authRouter from "./routers/auth-router";
 
 if (process.env["NODE_ENV"] === "test") {
   configDotenv({ path: ".env.test" });
@@ -18,8 +19,10 @@ const corsOptions = {
   optionsSuccessStatus: 200,
 };
 
+//middlewares
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(errorHandler);
 
-// Configuración de rutas
+// ROUTERS:
+app.use(authRouter);
