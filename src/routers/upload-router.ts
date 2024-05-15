@@ -6,8 +6,7 @@ import { parse } from "csv-parse/sync";
 import { ApiError } from "../middlewares/error";
 import { UserParams, userCSVSchema } from "../models/upload";
 import { ZodError } from "zod";
-// import { validationHandler } from "../middlewares/validation";
-// import { userCSVSchema } from "../models/upload";
+import * as db from "../db";
 
 const uploadRouter = express.Router();
 
@@ -19,19 +18,19 @@ uploadRouter.post(
   async (req, res, next) => {
     try {
       const fileCSVContent = readFileSync("./upload/users.csv", "utf-8");
-      const contentCSV = parse(fileCSVContent, {
+      const parsedCSV = parse(fileCSVContent, {
         columns: true,
         cast: (value, context) => {
           if (context.column === "age") return Number(value);
           return value;
         },
       });
-      console.log(contentCSV);
+      console.log(parsedCSV);
       const successData: UserParams[] = [];
       const errorData: { row: number; details: Record<string, string> }[] = [];
 
       // Lógica para procesar los datos y detectar errores
-      for (const [index, record] of contentCSV.entries()) {
+      for (const [index, record] of parsedCSV.entries()) {
         try {
           // Validar el registro según el esquema de Zod
           const validatedRecord = userCSVSchema.parse(record);
@@ -46,12 +45,18 @@ uploadRouter.post(
           errorData.push({ row: index + 1, details: details });
         }
       }
-      //   const getUsers = await contenCSV;
-      //   if (){}
+      //   beforeEach(async () => {
+      //     await truncateTable("users");
+      const values = successData
+        .map((user) => `('${user.name}','${user.email}','${user.age}')`)
+        .join(", ");
+      let query = `INSERT INTO users (name, email, age) VALUES ${values}  RETURNING *`;
+      const insertUsers = await db.query(query);
+
       res.json({
         ok: true,
         data: {
-          success: [successData],
+          success: [insertUsers.rows],
           error: [errorData],
         },
       });
