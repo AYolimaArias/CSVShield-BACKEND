@@ -19,6 +19,7 @@ API LINK: https://csvshield.onrender.com
 
 You need to have Node.js, npm, and PostgreSQL installed in your development environment.
 
+
 ## Installation
 
 1. Clone this repository:
@@ -49,6 +50,7 @@ npm run db:seed
 npm run dev
 ```
 
+
 ## Configuration
 
 To properly configure your development environment, you'll need to create a .env file in the root of the project and set the following environment variables.
@@ -58,7 +60,7 @@ The .env.example file provides a template for users to copy and configure the va
 ```plaintext
 # File .env content
 
-# PostgreSQL database configuraton
+# PostgreSQL database configuration
 DB_HOST=localhost
 DB_NAME=mi_base_de_datos
 DB_PORT=5432
@@ -98,6 +100,7 @@ npm run db:seed
 npm run db:reset
 ```
 
+
 ## Proyect Structure
 
 The authentication is based on the three-layer architecture:
@@ -105,6 +108,7 @@ The authentication is based on the three-layer architecture:
 - **Routers:** Defines routes and handles HTTP requests.
 - **Services:** Contains business logic and communicates with the data access layer.
 - **data:** Manages interactions with the PostgreSQL database using pg.
+  
 
 ## Endpoints
 
@@ -130,8 +134,6 @@ The authentication is based on the three-layer architecture:
 
 
 ## Request Examples
-
-#### Signup account
 
 ##### POST / signup 
 
@@ -233,6 +235,8 @@ In this project, I use JSON Web Token (JWT) to manage authentication. JWT is an 
 
 4. **Token Verification:**
    -With each request to a protected resource, the server verifies the validity of the received JWT token. If the token is valid, access to the protected resource is allowed.
+
+
 
 ## Testing
 
