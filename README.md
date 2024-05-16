@@ -116,8 +116,6 @@ The authentication is based on the three-layer architecture:
 
 ## Endpoints
 
-### Register user
-
 ####  POST / signup (Create account)
 
 - **Description**: Allow a user to signup 
