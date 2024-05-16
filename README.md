@@ -12,6 +12,7 @@ API LINK: https://csvshield.onrender.com
 4. [Endpoints](#endpoints)
 5. [Request Examples](#request-examples)
 6. [Authentication](#authentication)
+7. [Testing](#testing)
 
 
 ## Requirements
@@ -231,6 +232,17 @@ In this project, I use JSON Web Token (JWT) to manage authentication. JWT is an 
    - The client stores the token, typically in local storage or cookies, to include it in subsequent requests to protected resources..
 
 4. **Token Verification:**
-   -With each request to a protected resource, the server verifies the validity of the received JWT token. If the token is valid, access to the protected resource is allowed..
+   -With each request to a protected resource, the server verifies the validity of the received JWT token. If the token is valid, access to the protected resource is allowed.
+
+## Testing
+
+I did eight test to testing the endpoints functionality implementing `Vitest` and `SuperTest` libraries.
+
+you can run the tests with the command below:
+
+```bash
+npm run test
+```
+
 
 
