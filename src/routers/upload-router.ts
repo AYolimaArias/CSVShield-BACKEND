@@ -18,7 +18,7 @@ uploadRouter.post(
   authorize("admin"),
   async (req, res, next) => {
     try {
-      const fileCSVContent = readFileSync("./upload/users.csv", "utf-8");
+      const fileCSVContent = readFileSync("./src/upload/users.csv", "utf-8");
       const parsedCSV = parse(fileCSVContent, {
         columns: true,
         cast: (value, context) => {
