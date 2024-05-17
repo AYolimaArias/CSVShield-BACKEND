@@ -23,8 +23,9 @@ const corsOptions = {
 //middlewares
 app.use(cors(corsOptions));
 app.use(express.json());
-app.use(errorHandler);
 
 // ROUTERS:
 app.use(authRouter);
 app.use(uploadRouter);
+
+app.use(errorHandler);
