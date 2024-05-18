@@ -16,7 +16,7 @@ export const app = express();
 
 // Configuración de CORS para permitir solicitudes desde el frontend
 const corsOptions = {
-  origin: true, // http:localhost:5173
+  origin: process.env["CLIENT_ORIGIN"], // http:localhost:5173
   optionsSuccessStatus: 200,
 };
 
@@ -27,5 +27,4 @@ app.use(express.json());
 // ROUTERS:
 app.use(authRouter);
 app.use(uploadRouter);
-
 app.use(errorHandler);

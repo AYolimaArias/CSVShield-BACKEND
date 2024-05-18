@@ -1,13 +1,33 @@
 import express from "express";
 import { authenticateHandler } from "../middlewares/authenticate";
 import { authorize } from "../middlewares/authorize";
-import { readFileSync } from "fs";
+import { readFileSync, unlinkSync } from "fs";
 import { parse } from "csv-parse/sync";
 import { ApiError } from "../middlewares/error";
 import { UserParams, userCSVSchema } from "../models/upload";
 import { ZodError } from "zod";
 import * as db from "../db";
-import { truncateTable } from "../db/utils";
+
+import multer from "multer";
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "uploads/");
+  },
+  filename: (req, file, cb) => {
+    cb(null, file.originalname);
+  },
+});
+
+const upload = multer({
+  storage,
+  fileFilter: (req, file, cb) => {
+    if (file.mimetype !== "text/csv") {
+      return cb(new Error("Only allow .csv files"));
+    }
+    cb(null, true);
+  },
+});
 
 const uploadRouter = express.Router();
 
@@ -16,9 +36,13 @@ uploadRouter.post(
   "/upload",
   authenticateHandler,
   authorize("admin"),
+  upload.single("CSVFile"),
   async (req, res, next) => {
     try {
-      const fileCSVContent = readFileSync("./src/upload/users.csv", "utf-8");
+      if (!req.file) {
+        throw new ApiError("No file uploaded", 400);
+      }
+      const fileCSVContent = readFileSync(req.file.path, "utf-8");
       const parsedCSV = parse(fileCSVContent, {
         columns: true,
         cast: (value, context) => {
@@ -47,7 +71,6 @@ uploadRouter.post(
         }
       }
 
-      await truncateTable("users");
       const values = successData
         .map((user) => `('${user.name}','${user.email}','${user.age}')`)
         .join(", ");
@@ -61,8 +84,12 @@ uploadRouter.post(
           error: [errorData],
         },
       });
+      unlinkSync(req.file.path);
     } catch (error) {
-      next(new ApiError("Unauthorized", 401));
+      if (req.file) {
+        unlinkSync(req.file.path);
+      }
+      next(error);
     }
   }
 );
