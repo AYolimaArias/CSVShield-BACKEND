@@ -9,6 +9,9 @@ import { ZodError } from "zod";
 import * as db from "../db";
 
 import multer from "multer";
+// import { truncateTable } from "../db/utils";
+
+const uploadRouter = express.Router();
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -29,8 +32,6 @@ const upload = multer({
   },
 });
 
-const uploadRouter = express.Router();
-
 //POST/upload:
 uploadRouter.post(
   "/upload",
@@ -38,6 +39,7 @@ uploadRouter.post(
   authorize("admin"),
   upload.single("CSVFile"),
   async (req, res, next) => {
+    console.log(req.file);
     try {
       if (!req.file) {
         throw new ApiError("No file uploaded", 400);
@@ -70,7 +72,7 @@ uploadRouter.post(
           errorData.push({ row: index + 1, details: details });
         }
       }
-
+      // await truncateTable("users");
       const values = successData
         .map((user) => `('${user.name}','${user.email}','${user.age}')`)
         .join(", ");
