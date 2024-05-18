@@ -7,37 +7,17 @@ import { ApiError } from "../middlewares/error";
 import { UserParams, userCSVSchema } from "../models/upload";
 import { ZodError } from "zod";
 import * as db from "../db";
-
-import multer from "multer";
+import multerMiddleware from "../middlewares/multer";
 // import { truncateTable } from "../db/utils";
 
 const uploadRouter = express.Router();
-
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "uploads/");
-  },
-  filename: (req, file, cb) => {
-    cb(null, file.originalname);
-  },
-});
-
-const upload = multer({
-  storage,
-  fileFilter: (req, file, cb) => {
-    if (file.mimetype !== "text/csv") {
-      return cb(new Error("Only allow .csv files"));
-    }
-    cb(null, true);
-  },
-});
 
 //POST/upload:
 uploadRouter.post(
   "/upload",
   authenticateHandler,
   authorize("admin"),
-  upload.single("CSVFile"),
+  multerMiddleware,
   async (req, res, next) => {
     console.log(req.file);
     try {
