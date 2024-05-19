@@ -9,8 +9,14 @@ import { ZodError } from "zod";
 import * as db from "../db";
 import multerMiddleware from "../middlewares/multer";
 import { truncateTable } from "../db/utils";
+import fs from "fs";
+import path from "path";
 
 const uploadRouter = express.Router();
+const uploadDir = path.join(__dirname, "uploads");
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir);
+}
 
 //POST/upload:
 uploadRouter.post(
