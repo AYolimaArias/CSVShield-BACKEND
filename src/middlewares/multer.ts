@@ -4,7 +4,7 @@ import { NextFunction, Request, Response } from "express";
 // Configuración de almacenamiento de Multer
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "uploads/");
+    cb(null, "src/uploads/");
   },
   filename: (req, file, cb) => {
     cb(null, file.originalname);
