@@ -133,6 +133,7 @@ The authentication is based on the three-layer architecture:
 
 - **Description**: Convert the CSV file into JSON format and store the records in a PostgreSQL database.
 - **Authentication**: Secure the JWT token generated during login under `Auth/Bearer`.
+- **Uploading File**: Upload only **.CSV** files under  `Multipart Form/File or Form/Files`. You need to specify the name: **file** 
 - **Response**: The CSV file converted to JSON format with success data and error data
 
 
@@ -183,6 +184,7 @@ The authentication is based on the three-layer architecture:
 
 - **Description**: Convert the CSV file into JSON format and store the records in a PostgreSQL database.
 - **Authentication**: Secure the JWT token generated during login under `Auth/Bearer`.
+- **Uploading File**: Upload only **.CSV** files under  `Multipart Form/File or Form/Files`. You need to specify the name: **file** 
 - **Response**:
   - `200 OK`
   - `401 Unauthorized`: If the user does not have an administrator role
