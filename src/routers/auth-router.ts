@@ -42,7 +42,7 @@ authRouter.post("/login", async (req, res, next) => {
     res.json({
       ok: true,
       message: "Login successful",
-      data: { token: token },
+      token: token,
     });
   } catch (error) {
     next(new ApiError("Incorrect credentials", 401));
