@@ -42,6 +42,7 @@ describe("UPLOAD API", () => {
     const token = jwt.sign(payload, jwtSecret, { expiresIn: "120m" });
     let response = await request(app)
       .post("/upload")
+      .attach("file", "./src/uploads/users.csv")
       .set("Authorization", `Bearer ${token}`);
     expect(response.statusCode).toBe(200);
   });
