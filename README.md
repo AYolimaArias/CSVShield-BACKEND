@@ -5,8 +5,7 @@ This API provides endpoints for user creation, user authentication, CSV file upl
 API LINK: https://csvshield.onrender.com
 
 
-
-https://github.com/AYolimaArias/CSVShield-BACKEND/assets/125715473/20511ed2-2cba-43c1-a02d-0ceebb5f622b
+https://github.com/AYolimaArias/CSVShield-BACKEND/assets/125715473/21dbcde1-5409-4027-97bb-ac6f03bc29a0
 
 
 
