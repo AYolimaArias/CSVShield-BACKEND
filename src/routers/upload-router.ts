@@ -8,7 +8,7 @@ import { UserParams, userCSVSchema } from "../models/upload";
 import { ZodError } from "zod";
 import * as db from "../db";
 import multerMiddleware from "../middlewares/multer";
-// import { truncateTable } from "../db/utils";
+import { truncateTable } from "../db/utils";
 
 const uploadRouter = express.Router();
 
@@ -52,7 +52,7 @@ uploadRouter.post(
           errorData.push({ row: index + 1, details: details });
         }
       }
-      // await truncateTable("users");
+      await truncateTable("users");
       const values = successData
         .map((user) => `('${user.name}','${user.email}','${user.age}')`)
         .join(", ");

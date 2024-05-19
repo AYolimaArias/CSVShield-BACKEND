@@ -11,7 +11,6 @@ const storage = multer.diskStorage({
   },
 });
 
-// Configuración de Multer
 const upload = multer({
   storage,
   fileFilter: (req, file, cb) => {
@@ -20,7 +19,7 @@ const upload = multer({
     }
     cb(null, true);
   },
-}).single("CSVFile");
+}).single("file");
 
 // Middleware de Multer para manejar la carga de archivos
 const multerMiddleware = (req: Request, res: Response, next: NextFunction) => {
