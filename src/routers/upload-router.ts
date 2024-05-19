@@ -1,7 +1,7 @@
 import express from "express";
 import { authenticateHandler } from "../middlewares/authenticate";
 import { authorize } from "../middlewares/authorize";
-import { readFileSync, unlinkSync } from "fs";
+import { readFileSync } from "fs";
 import { parse } from "csv-parse/sync";
 import { ApiError } from "../middlewares/error";
 import { UserParams, userCSVSchema } from "../models/upload";
@@ -72,10 +72,10 @@ uploadRouter.post(
           error: [errorData],
         },
       });
-      unlinkSync(req.file.path);
+      // unlinkSync(req.file.path);
     } catch (error) {
       if (req.file) {
-        unlinkSync(req.file.path);
+        // unlinkSync(req.file.path);
       }
       next(error);
     }

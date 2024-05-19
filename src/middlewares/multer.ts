@@ -15,19 +15,18 @@ const upload = multer({
   storage,
   fileFilter: (req, file, cb) => {
     if (file.mimetype !== "text/csv") {
-      return cb(new Error("Solo se permiten archivos .csv"));
+      return cb(new Error("Only .csv files are allowed"));
     }
     cb(null, true);
   },
 }).single("file");
 
-// Middleware de Multer para manejar la carga de archivos
 const multerMiddleware = (req: Request, res: Response, next: NextFunction) => {
   upload(req, res, (err) => {
     if (err) {
-      console.log("Error al cargar el archivo:", err);
+      console.log("error uploading file", err);
     } else {
-      console.log("Archivo cargado correctamente:", req.file);
+      console.log("success uploading file", req.file);
     }
     next();
   });
