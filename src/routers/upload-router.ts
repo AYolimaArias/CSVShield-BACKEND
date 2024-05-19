@@ -66,12 +66,8 @@ uploadRouter.post(
           error: [errorData],
         },
       });
-      // unlinkSync(req.file.path);
     } catch (error) {
-      if (req.file) {
-        // unlinkSync(req.file.path);
-      }
-      next(error);
+      next(new ApiError("unauthorized", 401));
     }
   }
 );

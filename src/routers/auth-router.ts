@@ -3,6 +3,7 @@ import { validationHandler } from "../middlewares/validation";
 import { userSchema } from "../models/auth";
 import { createUser, validateCredentials } from "../services/auth-service";
 import jwt from "jsonwebtoken";
+import { ApiError } from "../middlewares/error";
 
 const jwtSecret = "ultra-secret";
 
@@ -26,7 +27,7 @@ authRouter.post(
         },
       });
     } catch (error) {
-      next(error);
+      next(new ApiError("Invalid credentials", 400));
     }
   }
 );
@@ -44,7 +45,7 @@ authRouter.post("/login", async (req, res, next) => {
       data: { token: token },
     });
   } catch (error) {
-    next(error);
+    next(new ApiError("Incorrect credentials", 401));
   }
 });
 
