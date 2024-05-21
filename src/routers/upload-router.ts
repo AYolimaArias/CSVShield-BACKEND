@@ -34,7 +34,11 @@ uploadRouter.post(
       });
       console.log(parsedCSV);
       const successData: UserParams[] = [];
-      const errorData: { row: number; details: Record<string, string> }[] = [];
+      const errorData: {
+        row: number;
+        details: Record<string, string>;
+        record: any;
+      }[] = [];
 
       // Lógica para procesar los datos y detectar errores
       for (const [index, record] of parsedCSV.entries()) {
@@ -49,7 +53,7 @@ uploadRouter.post(
             details[error.path[0]] = error.message;
           });
           // Agregar el registro con errores al array de datos erróneos
-          errorData.push({ row: index + 1, details: details });
+          errorData.push({ row: index + 1, details: details, record });
         }
       }
       await truncateTable("users");
